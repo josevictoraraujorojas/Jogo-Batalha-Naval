@@ -15,7 +15,7 @@ public class Jogo{
                 jo= "jogar(1)", aj="ajuda(2)",cr="creditos(3)",sr="\t\t\t|\n|\t\t\t\tsair(4)";
 
         System.out.println(lin+tit+lin+"\n|\t\t\t   "+jo+es+aj+ess+cr+sr+"\t\t\t\t|"+lin);
-        System.out.println("kskssksksk");
+
 
     }public static void controlemenu() {//controla as acões do menu
         String selecionarop="x",lin ="|-----------------------------------|";
@@ -143,6 +143,8 @@ public class Jogo{
     }
 
     public static void p1xp2(){
+        escolherOpcaoDeModos();
+
         obterNomesDosJogadores();
         System.out.printf("\t\t\t %s \t\t\t\t\t\t\t\t\t\t %s \n",nomeJogador1,nomeJogador2);
         inicializarTabuleiro(tabuleiroJogador1);
@@ -152,6 +154,27 @@ public class Jogo{
     }
     public static void p1xbot(){
 
+    }
+    public static void escolherOpcaoDeModos(){
+        Scanner ler = new Scanner(System.in);
+        ;String op = "x";
+            while (!(op.equals("1")||op.equals("2")||op.equals("3"))){
+                System.out.println("voce quer navios em posicoes aleatoria ou quer escolher as posicoes do navio\nmodo aletorio(1) escolher posicoes(2)");
+                op=ler.next();
+            switch (op){
+
+                case "1" -> modoAletorios();
+                case "2" ->modoEscolha();
+                case "3" -> System.out.println("voltando");
+                default -> System.out.println("erro!!");
+            }
+        }
+    }
+    public static void modoAletorios(){
+        System.out.println("modo aleatorio");
+    }
+    public static void modoEscolha(){
+        System.out.println("modo escolha");
     }
 
     public static void obterNomesDosJogadores() {
