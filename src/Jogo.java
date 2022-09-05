@@ -15,7 +15,7 @@ public class Jogo{
 
         System.out.println(lin+tit+lin+"\n|\t\t\t   "+jo+es+aj+ess+cr+sr+"\t\t\t\t|"+lin);
 
-
+/*nós somos tops o resto são sutians*/
     }public static void controlemenu() {//controla as acões do menu
         String selecionarop="x",lin ="|-----------------------------------|";
         Scanner input= new Scanner(System.in);
