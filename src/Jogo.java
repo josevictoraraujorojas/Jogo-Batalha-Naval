@@ -15,6 +15,7 @@ public class Jogo{
                 jo= "jogar(1)", aj="ajuda(2)",cr="creditos(3)",sr="\t\t\t|\n|\t\t\t\tsair(4)";
 
         System.out.println(lin+tit+lin+"\n|\t\t\t   "+jo+es+aj+ess+cr+sr+"\t\t\t\t|"+lin);
+        System.out.println("kskssksksk");
 
     }public static void controlemenu() {//controla as acões do menu
         String selecionarop="x",lin ="|-----------------------------------|";
