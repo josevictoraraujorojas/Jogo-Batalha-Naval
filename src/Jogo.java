@@ -1,8 +1,12 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Jogo<limiteMaximoDeNavios> {
-
+public class Jogo{
+    static String nomeJogador1, nomeJogador2;
+    static int tamanho =7;
+    static String[][] tabuleiroJogador1 = new String[tamanho][tamanho];
+    static String[][] tabuleiroJogador2 = new String[tamanho][tamanho];
+    static Scanner input = new Scanner(System.in);
     public static void imprimirmenu(){
         String tit = "\n|   ~ __ ~ Batalha  Naval ~  __ ~   |",
                 lin ="\n|-----------------------------------|",
@@ -13,14 +17,14 @@ public class Jogo<limiteMaximoDeNavios> {
 
 
     }public static void controlemenu() {//controla as acões do menu
-        String selecionarop,lin ="|-----------------------------------|";
+        String selecionarop="x",lin ="|-----------------------------------|";
         Scanner input= new Scanner(System.in);
-        while (true){
+        while (!(selecionarop.equals("4"))){
             imprimirmenu();
             System.out.print("|\t digite um numero de 1 a 4: \t|");
             selecionarop = input.next();
             switch (selecionarop) {
-                case "1" -> imprimiropjogo();
+                case "1" -> imprimirojogo();
                 case "2" -> textodeajuda();
                 case "3" -> creditos();
                 case "4" -> sair();
@@ -28,8 +32,8 @@ public class Jogo<limiteMaximoDeNavios> {
             }
         }
     }
-    public static void imprimiropjogo(){//define qual vai ser o modo de jogo
-        String tit = "|~ __ ~ opcoes  do jogo ~ __ ~|", lin ="|-----------------------------------|",
+    public static void imprimirojogo(){//define qual vai ser o modo de jogo
+        String tit = "|   ~ __ ~ opcoes  do jogo ~ __ ~   |", lin ="|-----------------------------------|",
                 mul = "multiplayer(1)", sin = "single player(2)",vol = "voltar ao menu principal(3)";
         System.out.println(lin+"\n"+tit+"\n"+lin+"\n|\t\t\t"+mul+"\t\t\t|\n|\t\t   "+sin+" \t\t|\n|\t "+vol+"\t|\n"+lin);
         opcaopdojogo();
@@ -47,37 +51,19 @@ public class Jogo<limiteMaximoDeNavios> {
         }
 
     }
-    public static void textodeajuda(){
-        String textodeajuda =
-                "  Cada jogador, na sua vez de      |\n| jogar, seguira o seguinte         |\n| procedimento:                     |\n|"+
-                        " 1. Disparara 3 tiros, indicando   |\n| a coordenadas do alvo atraves     |\n| do numero da linha e da letra da  |\n|"+
-                        " coluna que definem a posicao.     |\n| Para que o jogador tenha o        |\n| controle dos tiros disparados,    |\n|"+
-                        " devera marcar cada um deles no    |\n| reticulado intitulado Seu :jogo:. |\n| 2. Apos cada um dos tiros, o;     |\n|"+
-                        " oponente avisara se acertou e,    |\n| nesse caso, qual a arma foi       |\n| atingida. Se ela for afundada,    |\n|"+
-                        " esse fato tambem devera ser       |\n| informado.                        |\n| 3. A cada tiro acertado em um     |\n|"+
-                        " alvo, o oponente devera marcar    |\n| em seu tabuleiro para que possa   |\n| informar quando a arma for        |\n|"+
-                        " afundada.                         |\n| 4. Uma arma e afundada            |\n| quando todas as casas que         |\n|"+
-                        " formam essa arma forem            |\n| atingidas.                        |\n|5. Apos os 3 tiros e as respostas  |\n|"+
-                        " do opoente, a vez para para o     |\n| outro jogador.                    |\n| O jogo termina quando um dos      |\n|"+
-                        " jogadores afundar todas as        |\n| armas do seu oponente.            |";
-
-        String titulo = "|~ ~ ~ ~ __ ~ ajuda ~ __ ~ ~ ~ ~|",
-                linhas ="\n|-----------------------------------|";
-        System.out.print(linhas+"\n"+titulo+"\n"+linhas+"\n|"+textodeajuda+linhas+"\n");opajuda();
-
-    } public static void opajuda(){
-        Scanner input = new Scanner(System.in);String res="x",s = "\n|\t\t\t\tsim(1)\t\t\t\t|", lin ="\n|-----------------------------------|";
-        while (!(res.equals("1"))){
-            System.out.print("|  deseja voltar ao menu principal? |"+s+lin);
-            res = input.next();
-            switch (res){
-                case "1"-> {
-                    System.out.println("Saindo da opção ajuda");
-                }
-                default -> System.out.println("| erro!!!\t\t\t\t\t\t\t|");}}
+ public static void opajuda(){
+    Scanner input = new Scanner(System.in);String res="x",s = "\n|\t\t\t\tsim(1)\t\t\t\t|", lin ="\n|-----------------------------------|";
+    while (!(res.equals("1"))){
+        System.out.print("|  deseja voltar ao menu principal? |"+s+lin);
+        res = input.next();
+        if ("1".equals(res)) {
+            System.out.println("Saindo da opção ajuda");
+        } else {
+            System.out.println("| erro!!!\t\t\t\t\t\t\t|");
+        }
     }
-    static String nomeJogador1, nomeJogador2;
-    static int tamanho =7;
+}
+
     public static void creditos(){
         String lin ="|-----------------------------------|" ,tit= "\n| ~ ~ ~ __   creditos  __ ~ ~ ~ |",
                 n1 ="\n| * ~ * ~ -Ariana Mesquita- ~ * ~ * |",
@@ -88,11 +74,12 @@ public class Jogo<limiteMaximoDeNavios> {
         while (!(res.equals("1"))){
             System.out.print("|  deseja voltar ao menu principal? |"+s+linn);
             res = input.next();
-            switch (res){
-                case "1"->{
-                    System.out.println("saindo");
-                }
-                default -> System.out.println("| erro!!!\t\t\t\t\t\t\t|");}}
+            if ("1".equals(res)) {
+                System.out.println("saindo");
+            } else {
+                System.out.println("| erro!!!\t\t\t\t\t\t\t|");
+            }
+        }
     }
     public static void sair(){
         Scanner input = new Scanner(System.in);String res="x", lin ="\n|-----------------------------------|";
@@ -109,16 +96,56 @@ public class Jogo<limiteMaximoDeNavios> {
 
 
     }
-    // /, limiteMaximoDeNavios;/
-    static String[][] tabuleiroJogador1 = new String[tamanho][tamanho];
-    static String[][] tabuleiroJogador2 = new String[tamanho][tamanho];
-    static Scanner input = new Scanner(System.in);
+    public static void textodeajuda() {
+        // /, limiteMaximoDeNavios;/
+        String textodeajuda =
+                """
+                        |  Cada jogador, na sua vez de      |
+                        | jogar, seguira o seguinte         |
+                        | procedimento:                     |
+                        | 1. Disparara 3 tiros, indicando   |
+                        | a coordenadas do alvo atraves     |
+                        | do numero da linha e da letra da  |
+                        | coluna que definem a posicao.     |
+                        | Para que o jogador tenha o        |
+                        | controle dos tiros disparados,    |
+                        | devera marcar cada um deles no    |
+                        | reticulado intitulado Seu :jogo:. |
+                        | 2. Apos cada um dos tiros, o;     |
+                        | oponente avisara se acertou e,    |
+                        | nesse caso, qual a arma foi       |
+                        | atingida. Se ela for afundada,    |
+                        | esse fato tambem devera ser       |
+                        | informado.                        |
+                        | 3. A cada tiro acertado em um     |
+                        | alvo, o oponente devera marcar    |
+                        | em seu tabuleiro para que possa   |
+                        | informar quando a arma for        |
+                        | afundada.                         |
+                        | 4. Uma arma e afundada            |
+                        | quando todas as casas que         |
+                        | formam essa arma forem            |
+                        | atingidas.                        |
+                        |5. Apos os 3 tiros e as respostas  |
+                        | do opoente, a vez para para o     |
+                        | outro jogador.                    |
+                        | O jogo termina quando um dos      |
+                        | jogadores afundar todas as        |
+                        | armas do seu oponente.            |""";
+
+        String titulo = "|~ ~ ~ ~ __ ~ ajuda ~ __ ~ ~ ~ ~|",
+                linhas = "\n|-----------------------------------|";
+        System.out.print(linhas + "\n" + titulo + "\n" + linhas + "\n|" + textodeajuda + linhas + "\n");
+        opajuda();
+    }
+
     public static void p1xp2(){
         obterNomesDosJogadores();
         System.out.printf("\t\t\t %s \t\t\t\t\t\t\t\t\t\t %s \n",nomeJogador1,nomeJogador2);
-       inicializarTabuleiro(tabuleiroJogador1);
+        inicializarTabuleiro(tabuleiroJogador1);
        inicializarTabuleiro(tabuleiroJogador2);
         imprimirTabuleiro(tabuleiroJogador1,tabuleiroJogador2);
+
     }
     public static void p1xbot(){
 
