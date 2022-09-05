@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Jogo{
+
     static String nomeJogador1, nomeJogador2;
     static int tamanho =7;
     static String[][] tabuleiroJogador1 = new String[tamanho][tamanho];
@@ -15,7 +16,7 @@ public class Jogo{
 
         System.out.println(lin+tit+lin+"\n|\t\t\t   "+jo+es+aj+ess+cr+sr+"\t\t\t\t|"+lin);
 
-/*nós somos tops o resto são sutians*/
+        System.out.println("hello World");
     }public static void controlemenu() {//controla as acões do menu
         String selecionarop="x",lin ="|-----------------------------------|";
         Scanner input= new Scanner(System.in);
@@ -93,6 +94,8 @@ public class Jogo{
                 }
                 case "2"-> System.out.println("voltando");
                 default -> System.out.println("| erro!!!\t\t\t\t\t\t\t|");}}
+
+        System.out.println("hello world");
 
 
     }
