@@ -5,9 +5,11 @@ public class Jogo{
 
     static String nomeJogador1, nomeJogador2;
     static int tamanho =7;
+    static int navioTamanho =4;
     static String[][] tabuleiroJogador1 = new String[tamanho][tamanho];
     static String[][] tabuleiroJogador2 = new String[tamanho][tamanho];
     static Scanner input = new Scanner(System.in);
+
     public static void imprimirmenu(){
         String tit = "\n|   ~ __ ~ Batalha  Naval ~  __ ~   |",
                 lin ="\n|-----------------------------------|",
@@ -17,7 +19,9 @@ public class Jogo{
         System.out.println(lin+tit+lin+"\n|\t\t\t   "+jo+es+aj+ess+cr+sr+"\t\t\t\t|"+lin);
 
 
-    }public static void controlemenu() {//controla as acões do menu
+    }
+
+    public static void controlemenu() {//controla as acões do menu
         String selecionarop="x",lin ="|-----------------------------------|";
         Scanner input= new Scanner(System.in);
         while (!(selecionarop.equals("4"))){
@@ -33,12 +37,7 @@ public class Jogo{
             }
         }
     }
-    public static void imprimirojogo(){//define qual vai ser o modo de jogo
-        String tit = "|   ~ __ ~ opcoes  do jogo ~ __ ~   |", lin ="|-----------------------------------|",
-                mul = "multiplayer(1)", sin = "single player(2)",vol = "voltar ao menu principal(3)";
-        System.out.println(lin+"\n"+tit+"\n"+lin+"\n|\t\t\t"+mul+"\t\t\t|\n|\t\t   "+sin+" \t\t|\n|\t "+vol+"\t|\n"+lin);
-        opcaopdojogo();
-    }public static void opcaopdojogo(){
+    public static void opcaopdojogo(){
         Scanner input =new Scanner(System.in);String op="x",lin ="|-----------------------------------|";
         while (!(op.equals("1")||op.equals("2")||op.equals("3"))) {
             System.out.println("|     digite um numero de 1 a 3     |\n" + lin);
@@ -50,20 +49,86 @@ public class Jogo{
                 default -> System.out.println("erro!!");
             }
         }
+    }
+
+    public static void imprimirojogo(){//define qual vai ser o modo de jogo
+        String tit = "|   ~ __ ~ opcoes  do jogo ~ __ ~   |", lin ="|-----------------------------------|",
+                mul = "multiplayer(1)", sin = "single player(2)",vol = "voltar ao menu principal(3)";
+        System.out.println(lin+"\n"+tit+"\n"+lin+"\n|\t\t\t"+mul+"\t\t\t|\n|\t\t   "+sin+" \t\t|\n|\t "+vol+"\t|\n"+lin);
+        opcaopdojogo();
+    }
+
+    public static void p1xp2(){
+        inicializarTabuleiro(tabuleiroJogador1);
+        inicializarTabuleiro(tabuleiroJogador2);
+        obterNomesDosJogadores();
+        System.out.printf("\t\t\t %s \t\t\t\t\t\t\t\t\t\t %s \n",nomeJogador1,nomeJogador2);
+        escolherOpcaoDeModos();
+        imprimirTabuleiro(tabuleiroJogador1,tabuleiroJogador2);
 
     }
- public static void opajuda(){
-    Scanner input = new Scanner(System.in);String res="x",s = "\n|\t\t\t\tsim(1)\t\t\t\t|", lin ="\n|-----------------------------------|";
-    while (!(res.equals("1"))){
-        System.out.print("|  deseja voltar ao menu principal? |"+s+lin);
-        res = input.next();
-        if ("1".equals(res)) {
-            System.out.println("Saindo da opção ajuda");
-        } else {
-            System.out.println("| erro!!!\t\t\t\t\t\t\t|");
+
+    public static void p1xbot(){
+
+    }
+
+    public static void escolherOpcaoDeModos(){
+        Scanner ler = new Scanner(System.in);
+        String op = "x";
+        while (!(op.equals("1")||op.equals("2")||op.equals("3"))){
+            System.out.println("voce quer navios em posicoes aleatoria ou quer escolher as posicoes do navio\nmodo aletorio(1) escolher posicoes(2)");
+            op=ler.next();
+            switch (op){
+
+                case "1" -> modoAletorios();
+                case "2" ->{
+                    modoEscolha(tabuleiroJogador2,nomeJogador1);
+                    modoEscolha(tabuleiroJogador1,nomeJogador2);
+                }
+                case "3" -> System.out.println("voltando");
+                default -> System.out.println("erro!!");
+            }
         }
     }
-}
+
+    public static void modoAletorios(){
+        System.out.println("modo aleatorio");
+    }
+
+    public static void modoEscolha(String[][] x,String player){
+        System.out.println("modo escolha");
+        int linha;
+        int coluna;
+        int possibilidade;
+        imprimirTabuleiro(tabuleiroJogador1,tabuleiroJogador2);
+        System.out.println("escolha 4 barcos para o jogo do seu adversário");
+        for (int i = 1; i <= 4; i++) {
+            System.out.println("escolha se vc que colocar na 1)linha ou na 2)coluna");
+            possibilidade=input.nextInt();
+            System.out.println("em qual linha e em qual coluna voce quer colocar o barco");
+            linha=input.nextInt();
+            coluna=input.nextInt();
+            geraEscolha(x,possibilidade,linha,coluna);
+            imprimirTabuleiro(tabuleiroJogador1,tabuleiroJogador2);
+        }
+    }
+
+    public static void geraEscolha (String[][] jogo,int x,int y,int z){
+        if (x==1) {
+
+            jogo[y][z]="|";
+            jogo[y][z+navioTamanho-1]="|";
+            for (int j = 1; j < navioTamanho-1; j++)
+                jogo[y][z + j] = "-";
+        }
+        if (x==2) {
+
+            jogo[x+navioTamanho-1][y]="|";
+            jogo[x][y]="|";
+            for (int j = 1; j < navioTamanho-1; j++)
+                jogo[x+j][y] = "-";
+        }
+    }
 
     public static void creditos(){
         String lin ="|-----------------------------------|" ,tit= "\n| ~ ~ ~ __   creditos  __ ~ ~ ~ |",
@@ -82,6 +147,7 @@ public class Jogo{
             }
         }
     }
+
     public static void sair(){
         Scanner input = new Scanner(System.in);String res="x", lin ="\n|-----------------------------------|";
         while (!(res.equals("2"))){
@@ -99,6 +165,20 @@ public class Jogo{
 
 
     }
+
+    public static void opajuda(){
+        Scanner input = new Scanner(System.in);String res="x",s = "\n|\t\t\t\tsim(1)\t\t\t\t|", lin ="\n|-----------------------------------|";
+        while (!(res.equals("1"))){
+            System.out.print("|  deseja voltar ao menu principal? |"+s+lin);
+            res = input.next();
+            if ("1".equals(res)) {
+                System.out.println("Saindo da opção ajuda");
+            } else {
+                System.out.println("| erro!!!\t\t\t\t\t\t\t|");
+            }
+        }
+    }
+
     public static void textodeajuda() {
         // /, limiteMaximoDeNavios;/
         String textodeajuda =
@@ -107,9 +187,9 @@ public class Jogo{
                         | jogar, seguira o seguinte         |
                         | procedimento:                     |
                         | 1. Disparara 3 tiros, indicando   |
-                        | a coordenadas do alvo atraves     |
+                        | a coordenadas do alvo através     |
                         | do numero da linha e da letra da  |
-                        | coluna que definem a posicao.     |
+                        | coluna que definem a posição.     |
                         | Para que o jogador tenha o        |
                         | controle dos tiros disparados,    |
                         | devera marcar cada um deles no    |
@@ -118,7 +198,7 @@ public class Jogo{
                         | oponente avisara se acertou e,    |
                         | nesse caso, qual a arma foi       |
                         | atingida. Se ela for afundada,    |
-                        | esse fato tambem devera ser       |
+                        | esse fato também devera ser       |
                         | informado.                        |
                         | 3. A cada tiro acertado em um     |
                         | alvo, o oponente devera marcar    |
@@ -142,47 +222,13 @@ public class Jogo{
         opajuda();
     }
 
-    public static void p1xp2(){
-        escolherOpcaoDeModos();
-
-        obterNomesDosJogadores();
-        System.out.printf("\t\t\t %s \t\t\t\t\t\t\t\t\t\t %s \n",nomeJogador1,nomeJogador2);
-        inicializarTabuleiro(tabuleiroJogador1);
-       inicializarTabuleiro(tabuleiroJogador2);
-        imprimirTabuleiro(tabuleiroJogador1,tabuleiroJogador2);
-
-    }
-    public static void p1xbot(){
-
-    }
-    public static void escolherOpcaoDeModos(){
-        Scanner ler = new Scanner(System.in);
-        ;String op = "x";
-            while (!(op.equals("1")||op.equals("2")||op.equals("3"))){
-                System.out.println("voce quer navios em posicoes aleatoria ou quer escolher as posicoes do navio\nmodo aletorio(1) escolher posicoes(2)");
-                op=ler.next();
-            switch (op){
-
-                case "1" -> modoAletorios();
-                case "2" ->modoEscolha();
-                case "3" -> System.out.println("voltando");
-                default -> System.out.println("erro!!");
-            }
-        }
-    }
-    public static void modoAletorios(){
-        System.out.println("modo aleatorio");
-    }
-    public static void modoEscolha(){
-        System.out.println("modo escolha");
-    }
-
     public static void obterNomesDosJogadores() {
         System.out.println("Digite o nome do Jogador 1: ");
         nomeJogador1 = input.next();
         System.out.println("Digite o nome do Jogador 2: ");
         nomeJogador2 = input.next();
     }
+
     public static void inicializarTabuleiro(String[][] x){
         for (int i = 0; i < tamanho ; i++){
             Arrays.fill(x[i],"*");
