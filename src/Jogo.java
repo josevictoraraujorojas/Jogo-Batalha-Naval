@@ -9,54 +9,57 @@ public class Jogo{
     static String[][] tabuleiroJogador1 = new String[tamanho][tamanho];
     static String[][] tabuleiroJogador2 = new String[tamanho][tamanho];
     static Scanner input = new Scanner(System.in);
+    public static void imprimirMenu(){ //metodo que imprimi o menu para o usuário//
+        String  tit = "|   ~ __ ~ Batalha  Naval ~  __ ~   |",
+                lin = "|-----------------------------------|",
+                jo = "jogar(1)", aj="ajuda(2)",cr="creditos(3)",
+                sr = "\t\t\t|\n|\t\t\t\tsair(4)";
 
-    public static void imprimirmenu(){
-        String tit = "\n|   ~ __ ~ Batalha  Naval ~  __ ~   |",
-                lin ="\n|-----------------------------------|",
-                es = "\t\t\t\t|\n|\t\t\t   ",ess="\t\t\t\t|\n|\t\t      ",
-                jo= "jogar(1)", aj="ajuda(2)",cr="creditos(3)",sr="\t\t\t|\n|\t\t\t\tsair(4)";
+        System.out.println(lin+"\n"+tit+"\n"+lin+"\n|\t\t\t   "+jo+"\t\t\t\t|\n|\t\t\t   "
+                +aj+"\t\t\t\t|\n|\t\t      "+cr+sr+"\t\t\t\t|\n"+lin);
 
-        System.out.println(lin+tit+lin+"\n|\t\t\t   "+jo+es+aj+ess+cr+sr+"\t\t\t\t|"+lin);
-
-
-    }
-
-    public static void controlemenu() {//controla as acões do menu
-        String selecionarop="x",lin ="|-----------------------------------|";
-        Scanner input= new Scanner(System.in);
-        while (!(selecionarop.equals("4"))){
-            imprimirmenu();
+    }public static void menuPrincipal() {//chama o metodo imprimir menu e controla a interção do usuário//
+        String escolha="x",lin ="|-----------------------------------|";
+        while (!(escolha.equals("4"))){
+            imprimirMenu();
             System.out.print("|\t digite um numero de 1 a 4: \t|");
-            selecionarop = input.next();
-            switch (selecionarop) {
-                case "1" -> imprimirojogo();
-                case "2" -> textodeajuda();
+            escolha = input.next();
+            switch (escolha) {
+                case "1" -> modosDoJogo();
+                case "2" -> voltaraomenuprincipal();//-> opção ajuda********
                 case "3" -> creditos();
                 case "4" -> sair();
                 default -> System.out.println("|erro!\t\t\t\t\t\t\t\t|\n"+lin);
             }
         }
     }
-    public static void opcaopdojogo(){
-        Scanner input =new Scanner(System.in);String op="x",lin ="|-----------------------------------|";
-        while (!(op.equals("1")||op.equals("2")||op.equals("3"))) {
-            System.out.println("|     digite um numero de 1 a 3     |\n" + lin);
-            op = input.next();
-            switch (op) {
+    public static void imprimirmodosdojogo(){//define qual vai ser o modo de jogo
+        String tit = "|   ~ __ ~ opcoes  do jogo ~ __ ~   |",
+               lin = "|-----------------------------------|",
+               mul = "multiplayer(1)", sin = "single player(2)",
+               vmp = "voltar ao menu principal(3)";
+
+        System.out.println(lin+"\n"+tit+"\n"+lin+"\n|\t\t\t"+mul+
+                "\t\t\t|\n|\t\t   "+sin+" \t\t|\n|\t "+vmp+"\t|\n"+lin);
+;
+        }
+    public static void modosDoJogo(){
+        String escolha="x",lin ="|-----------------------------------|";
+        imprimirmodosdojogo();
+        while (!(escolha.equals("1")||escolha.equals("2")||escolha.equals("3"))) {
+
+            System.out.println("|     digite um numero de 1 a 3     |" +"\n" +lin);
+            escolha = input.next();
+            switch (escolha) {
                 case "1" -> p1xp2();
                 case "2" -> p1xbot();
-                case "3" -> System.out.println("voltando menu");
+                case "3" -> System.out.println("|voltando!!\t\t\t\t\t\t\t|");
                 default -> System.out.println("erro!!");
             }
         }
     }
 
-    public static void imprimirojogo(){//define qual vai ser o modo de jogo
-        String tit = "|   ~ __ ~ opcoes  do jogo ~ __ ~   |", lin ="|-----------------------------------|",
-                mul = "multiplayer(1)", sin = "single player(2)",vol = "voltar ao menu principal(3)";
-        System.out.println(lin+"\n"+tit+"\n"+lin+"\n|\t\t\t"+mul+"\t\t\t|\n|\t\t   "+sin+" \t\t|\n|\t "+vol+"\t|\n"+lin);
-        opcaopdojogo();
-    }
+
 
     public static void p1xp2(){
         inicializarTabuleiro(tabuleiroJogador1);
@@ -130,56 +133,7 @@ public class Jogo{
         }
     }
 
-    public static void creditos(){
-        String lin ="|-----------------------------------|" ,tit= "\n| ~ ~ ~ __   creditos  __ ~ ~ ~ |",
-                n1 ="\n| * ~ * ~ -Ariana Mesquita- ~ * ~ * |",
-                n2 ="\n|\t\t\t\t\t\t\t\t\t|\n| <....> -Jose Victor Rojas- <....> |",
-                n3 ="\n|\t\t\t\t\t\t\t\t\t|\n| ~ _ -Pedro  Ferreira- _ ~ |\n";
-        System.out.println(lin+tit+"\n"+lin+"\n|jogo desenvolvido por:             |"+n1+n2+n3+lin);
-        Scanner input = new Scanner(System.in);String res="x",s = "\n|\t\t\t\tsim(1)\t\t\t\t|", linn ="\n|-----------------------------------|";
-        while (!(res.equals("1"))){
-            System.out.print("|  deseja voltar ao menu principal? |"+s+linn);
-            res = input.next();
-            if ("1".equals(res)) {
-                System.out.println("saindo");
-            } else {
-                System.out.println("| erro!!!\t\t\t\t\t\t\t|");
-            }
-        }
-    }
-
-    public static void sair(){
-        Scanner input = new Scanner(System.in);String res="x", lin ="\n|-----------------------------------|";
-        while (!(res.equals("2"))){
-            System.out.print("| deseja sair do jogo? sim(1) nao(2)|"+lin);
-            res = input.next();
-            switch (res){
-                case "1" -> {
-                    System.out.println("saindo..... ate a proxima!!:)");
-                    System.exit(0);
-                }
-                case "2"-> System.out.println("voltando");
-                default -> System.out.println("| erro!!!\t\t\t\t\t\t\t|");}}
-
-        System.out.println("hello world");
-
-
-    }
-
-    public static void opajuda(){
-        Scanner input = new Scanner(System.in);String res="x",s = "\n|\t\t\t\tsim(1)\t\t\t\t|", lin ="\n|-----------------------------------|";
-        while (!(res.equals("1"))){
-            System.out.print("|  deseja voltar ao menu principal? |"+s+lin);
-            res = input.next();
-            if ("1".equals(res)) {
-                System.out.println("Saindo da opção ajuda");
-            } else {
-                System.out.println("| erro!!!\t\t\t\t\t\t\t|");
-            }
-        }
-    }
-
-    public static void textodeajuda() {
+    public static void imprimirTextoDeAjuda(){
         // /, limiteMaximoDeNavios;/
         String textodeajuda =
                 """
@@ -216,10 +170,51 @@ public class Jogo{
                         | jogadores afundar todas as        |
                         | armas do seu oponente.            |""";
 
-        String titulo = "|~ ~ ~ ~ __ ~ ajuda ~ __ ~ ~ ~ ~|",
-                linhas = "\n|-----------------------------------|";
-        System.out.print(linhas + "\n" + titulo + "\n" + linhas + "\n|" + textodeajuda + linhas + "\n");
-        opajuda();
+        String titulo = "|  ~ ~ ~ ~ __ ~ ajuda ~ __ ~ ~ ~ ~  |",
+               linhas = "|-----------------------------------|";
+        System.out.print(linhas + "\n" + titulo + "\n" + linhas + "\n" + textodeajuda +"\n" +linhas + "\n");
+    }
+
+    public static void voltaraomenuprincipal(){
+    String escolha = "x", lin ="|-----------------------------------|";
+    imprimirTextoDeAjuda();
+    while (!(escolha.equals("1"))){
+
+        System.out.print("| didite (1) para voltar ao menu    |\n"+lin);
+        escolha = input.next();
+        if ("1".equals(escolha)) {
+            System.out.println("|voltando!!\t\t\t\t\t\t\t|");
+        } else {
+            System.out.println("| erro!!!\t\t\t\t\t\t\t|");
+        }
+    }
+}
+
+    public static void creditos(){
+        String lin ="|-----------------------------------|" ,tit= "\n|   ~ ~ ~ __   creditos  __ ~ ~ ~   |",
+                n1 ="\n| * ~ * ~ -Ariana Mesquita- ~ * ~ * |",
+                n2 ="\n|\t\t\t\t\t\t\t\t\t|\n| <....> -Jose Victor Rojas- <....> |",
+                n3 ="\n|\t\t\t\t\t\t\t\t\t|\n|    ~ _ - Pedro  Ferreira - _ ~    |\n";
+        System.out.println(lin+tit+"\n"+lin+"\n|jogo desenvolvido por:             |"+n1+n2+n3+lin);
+        voltaraomenuprincipal();
+
+    }
+    public static void sair(){
+        String escolha="x", lin ="\n|-----------------------------------|";
+        while (!(escolha.equals("2"))){
+            System.out.print("| deseja sair do jogo? sim(1) nao(2)|"+lin);
+            escolha = input.next();
+            switch (escolha){
+                case "1" -> {
+                    System.out.println("|   saindo..... ate a proxima!!:)   |");
+                    System.exit(0);
+                }
+                case "2"-> System.out.println("|voltando!!\t\t\t\t\t\t\t|");
+                default -> System.out.println("| erro!!!\t\t\t\t\t\t\t|");}}
+
+        System.out.println("hello world");
+
+
     }
 
     public static void obterNomesDosJogadores() {
@@ -261,7 +256,7 @@ public class Jogo{
     }
 
     public static void main(String[] args) {
-        controlemenu();
+        menuPrincipal();
 
     }
 
