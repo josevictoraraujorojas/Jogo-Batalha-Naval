@@ -157,7 +157,7 @@ public class Jogo{
     }
     public static void escolherOpcaoDeModos(){
         Scanner ler = new Scanner(System.in);
-        ;String op = "x";
+        String op = "x";
             while (!(op.equals("1")||op.equals("2")||op.equals("3"))){
                 System.out.println("voce quer navios em posicoes aleatoria ou quer escolher as posicoes do navio\nmodo aletorio(1) escolher posicoes(2)");
                 op=ler.next();
