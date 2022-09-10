@@ -124,7 +124,6 @@ public class Jogo{
                 System.out.println("em qual linha e em qual coluna voce quer colocar o barco");
                 linha=input.nextInt()-1;
                 coluna=input.nextInt()-1;
-                verificaCasaVazia(x, possibilidade, linha, coluna);
             }
             geraEscolha(x, possibilidade, linha, coluna);
             imprimirTabuleiro(tabuleiroJogador1,tabuleiroJogador2);
@@ -136,14 +135,14 @@ public class Jogo{
         boolean t = false;
         if (x == 1) {
             if (verificaEspacoBarcoLinha(jogo, y, z)){
-                for (int j = 0; j < navioTamanho-1; j++) {
+                for (int j = 0; j < navioTamanho; j++) {
                     if (jogo[y][z + j].equals(casaVazia)) {
                         count++;
                     }
                 }
             }
             if (!(verificaEspacoBarcoLinha(jogo, y, z))){
-                for (int j = 0; j < navioTamanho-1; j++) {
+                for (int j = 0; j < navioTamanho; j++) {
                     if (jogo[y][z - j].equals(casaVazia)) {
                         count++;
                     }
@@ -182,13 +181,13 @@ public class Jogo{
 
     public static void geraEscolha (String[][] jogo,int x,int y,int z){
         if (x==1) {
-            if (verificaCasaVazia(jogo, x, y, z)){
+            if (verificaEspacoBarcoLinha(jogo, y, z)){
                 jogo[y][z]="|";
                 jogo[y][z+navioTamanho-1]="|";
                 for (int j = 1; j < navioTamanho-1; j++)
                     jogo[y][z + j] = "-";
             }
-            else if (!verificaCasaVazia(jogo, x, y, z)){
+            else if (!verificaEspacoBarcoLinha(jogo, y, z)){
                 jogo[y][z]="|";
                 jogo[y][z-(navioTamanho-1)]="|";
                 for (int j = 1; j < navioTamanho-1; j++)
@@ -196,14 +195,14 @@ public class Jogo{
             }
         }
         if (x==2) {
-            if (verificaCasaVazia(jogo, x, y, z)){
+            if (verificaEspacoBarcoColuna(jogo, y, z)){
                 jogo[y+navioTamanho-1][z]="|";
                 jogo[y][z]="|";
                 for (int j = 1; j < navioTamanho-1; j++)
                     jogo[y+j][z] = "-";
 
             }
-            else if (!verificaCasaVazia(jogo, x, y, z)){
+            else if (!verificaEspacoBarcoColuna(jogo, y, z)){
                 jogo[y-(navioTamanho-1)][z]="|";
                 jogo[y][z]="|";
                 for (int j = 1; j < navioTamanho-1; j++)
@@ -251,18 +250,18 @@ public class Jogo{
     }
     public static boolean verificaEspacoBarcoColuna(String[][] jogo,int y,int z){
         boolean t = false;
-        if (!(y+navioTamanho>tamanhoTabuleiro)){
-            t = true;
+        if (y+navioTamanho>tamanhoTabuleiro){
+            t = false;
         }
         else if (y+navioTamanho<=tamanhoTabuleiro){
-            t = false;
+            t = true;
         }
         return t;
     }
     public static boolean verificaEspacoDiagonalPrincipal1(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (y+navioTamanho>tamanhoTabuleiro){// diagonal principal pra baixo
+        if (y+navioTamanho>tamanhoTabuleiro && z + navioTamanho > tamanhoTabuleiro){// diagonal principal pra baixo
             t = false;
         }
         else if (y+navioTamanho<=tamanhoTabuleiro && z+navioTamanho<=tamanhoTabuleiro){
@@ -281,7 +280,7 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalSecundaria1(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (y+navioTamanho>tamanhoTabuleiro || z - navioTamanho < 0){
+        if (y+navioTamanho>tamanhoTabuleiro && z - navioTamanho < 0){
             t = false;
         }
         else if (y + navioTamanho<=tamanhoTabuleiro && z - navioTamanho > 0){ // diagonal secundária pra baixo
@@ -300,7 +299,7 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalPrincipal2(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (y - navioTamanho < 0 || z - navioTamanho < 0){ //diagonal principal pra cima
+        if (y - navioTamanho < 0 && z - navioTamanho < 0){ //diagonal principal pra cima
             t = false;
         }
         else if(y - navioTamanho>0 && z - navioTamanho > 0){
@@ -319,7 +318,7 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalSecundaria2(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (z + navioTamanho>tamanhoTabuleiro || y - navioTamanho < 0){ //diagonal secundária pra cima
+        if (z + navioTamanho>tamanhoTabuleiro && y - navioTamanho < 0){ //diagonal secundária pra cima
             t = false;
         }
         else if (y - navioTamanho > 0 && z + navioTamanho<=tamanhoTabuleiro){
