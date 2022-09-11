@@ -1,12 +1,13 @@
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Jogo{
 
     static String nomeJogador1, nomeJogador2;
-    static int tamanhoTabuleiro =7;
-    static int navioTamanho =1;
-    static int quantidadeBarcos = 1;
+    static int tamanhoTabuleiro = 7;
+    static int navioTamanho = 4;
+    static int quantidadeBarcos = 3;
     static String[][] tabuleiroJogador1 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
     static String[][] tabuleiroJogador2 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
     static String[][] jogoDoJogador1 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
@@ -19,6 +20,9 @@ public class Jogo{
     static int[] parteBarcoP2 = new int[1];
     static Scanner input = new Scanner(System.in);
     static String casaVazia = "*";
+    static int linha;
+    static int coluna;
+    static int possibilidade;
 
     public static void imprimirMenu(){ //metodo que imprimi o menu para o usuário//
         String  tit = "|   ~ __ ~ Batalha  Naval ~  __ ~   |",
@@ -69,8 +73,6 @@ public class Jogo{
         }
     }
 
-
-
     public static void p1xp2() throws InterruptedException {
         inicializarTabuleiro(tabuleiroJogador1);
         inicializarTabuleiro(tabuleiroJogador2);
@@ -120,8 +122,6 @@ public class Jogo{
         }
     }
     public static void combate(String nome,int[] jogada,int[] tentativas,int[] parteBarco,String[][] jogo,String[][] hack) throws InterruptedException {
-        int linha;
-        int coluna;
         String resposta;
         System.out.println("jogada do jogador: "+nome);
         //faz a jogada
@@ -138,8 +138,6 @@ public class Jogo{
         System.out.println("escolha uma coordenada para jogar a bomba");
         linha = input.nextInt()-1;
         coluna = input.nextInt()-1;
-
-
         //verifica se a jogada é diferente
         while (!diferentesJogadas(linha, coluna,jogo))
         {
@@ -149,7 +147,6 @@ public class Jogo{
             coluna = input.nextInt()-1;
 
         }
-
         //verifica se alguma parte do barco foi encontrada
         if (parteEncontrada(linha, coluna,hack))
         {
@@ -189,7 +186,6 @@ public class Jogo{
     {
         return hack[f][c].equals("-") || hack[f][c].equals("|") ;
     }
-
     public static void loja (String[][]hack,int[] tentativas) {
         int resposta=0;
         while (resposta!=1) {
@@ -208,7 +204,6 @@ public class Jogo{
             }
         }
     }
-
     public static void dicas(int x,String[][] hack) {
         int count =0;
         for (int i = 0; i < tamanhoTabuleiro ; i++) {
@@ -224,7 +219,6 @@ public class Jogo{
             System.out.println("nao tem barco nessa linha");
         }
     }
-
     public static void p1xbot(){
 
     }
@@ -237,7 +231,10 @@ public class Jogo{
             op=ler.next();
             switch (op){
 
-                case "1" -> modoAletorios();
+                case "1" -> {
+                    modoAletorios(nomeJogador1, tabuleiroJogador1);
+                    modoAletorios(nomeJogador2, tabuleiroJogador2);
+                }
                 case "2" ->{
                     modoEscolha(nomeJogador1,tabuleiroJogador2);
                     modoEscolha(nomeJogador2,tabuleiroJogador1);
@@ -247,16 +244,40 @@ public class Jogo{
             }
         }
     }
-
-    public static void modoAletorios(){
+    public static void modoAletorios(String nome,String[][] x){
         System.out.println("modo aleatorio");
+        Random aleatorio = new Random();
+        int count = 0;
+        while (count < quantidadeBarcos){
+            possibilidade = aleatorio.nextInt(1,4);
+            linha = aleatorio.nextInt(1,tamanhoTabuleiro-1);
+            coluna = aleatorio.nextInt(1, tamanhoTabuleiro-1);
+            verificaCasaVazia(x, possibilidade, linha, coluna);
+            while (!(verificaCasaVazia(x, possibilidade, linha, coluna))){
+                linha=aleatorio.nextInt(1, tamanhoTabuleiro-1);
+                coluna=aleatorio.nextInt(1, tamanhoTabuleiro-1);
+                verificaCasaVazia(x, possibilidade, linha, coluna);
+            }
+            geraEscolha(x, possibilidade, linha, coluna);
+            imprimirTabuleiro(tabuleiroJogador1, tabuleiroJogador2);
+            count++;
+        }
     }
-
+/*    public static boolean confereBarcos (String[][] x){
+        int count = 0;
+        for (int i = 0; i < tamanhoTabuleiro; i++) {
+            for (int j = 0; j < tamanhoTabuleiro; j++) {
+                if (x[i][j] != casaVazia){
+                    count++;
+                }
+            }
+        }
+        if (count < navioTamanho*quantidadeBarcos){
+            return false;
+        }else return true;
+    }*/
     public static void modoEscolha(String nome,String[][] x){
         System.out.println("modo escolha");
-        int linha;
-        int coluna;
-        int possibilidade;
         int count = 0;
         imprimirTabuleiro(jogoDoJogador1,jogoDoJogador2);
         System.out.println(nome+" escolha 4 barcos para o jogo do seu adversário");
@@ -278,6 +299,7 @@ public class Jogo{
                 coluna=input.nextInt()-1;
             }
             geraEscolha(x, possibilidade, linha, coluna);
+            imprimirTabuleiro(tabuleiroJogador1, tabuleiroJogador2);
             count++;
         }
     }
@@ -412,7 +434,7 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalPrincipal1(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (y+navioTamanho>tamanhoTabuleiro && z + navioTamanho > tamanhoTabuleiro){// diagonal principal pra baixo
+        if (y+navioTamanho>tamanhoTabuleiro && z+navioTamanho>tamanhoTabuleiro){// diagonal principal pra baixo
             t = false;
         }
         else if (y+navioTamanho<=tamanhoTabuleiro && z+navioTamanho<=tamanhoTabuleiro){
@@ -431,10 +453,10 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalSecundaria1(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (y+navioTamanho>tamanhoTabuleiro && z - navioTamanho < 0){
+        if (y+navioTamanho>tamanhoTabuleiro && z-navioTamanho<0){
             t = false;
         }
-        else if (y + navioTamanho<=tamanhoTabuleiro && z - navioTamanho > 0){ // diagonal secundária pra baixo
+        else if (y+navioTamanho<=tamanhoTabuleiro && z-navioTamanho>0){ // diagonal secundária pra baixo
             for (int j = 0; j < navioTamanho; j++) {
                  if (jogo[y + j][z - j].equals(casaVazia)) { // diagonal secundária pra baixo
                     count++;
@@ -450,10 +472,10 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalPrincipal2(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (y - navioTamanho < 0 && z - navioTamanho < 0){ //diagonal principal pra cima
+        if (y-navioTamanho<0 && z-navioTamanho<0){ //diagonal principal pra cima
             t = false;
         }
-        else if(y - navioTamanho>0 && z - navioTamanho > 0){
+        else if(y-navioTamanho>0 &&z-navioTamanho>0){
             for (int j = 0; j < navioTamanho; j++) {
                 if (jogo[y - j][z - j].equals(casaVazia)) { //diagonal principal pra cima
                     count++;
@@ -469,10 +491,10 @@ public class Jogo{
     public static boolean verificaEspacoDiagonalSecundaria2(String[][] jogo,int y,int z){
         int count = 0;
         boolean t = false;
-        if (z + navioTamanho>tamanhoTabuleiro && y - navioTamanho < 0){ //diagonal secundária pra cima
+        if (z+navioTamanho>tamanhoTabuleiro && y-navioTamanho<0){ //diagonal secundária pra cima
             t = false;
         }
-        else if (y - navioTamanho > 0 && z + navioTamanho<=tamanhoTabuleiro){
+        else if (y-navioTamanho>0 && z+navioTamanho<=tamanhoTabuleiro){
             for (int j = 0; j < navioTamanho; j++) {
                if (jogo[y - j][z + j].equals(casaVazia)){ //diagonal secundária pra cima
                     count++;
