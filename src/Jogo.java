@@ -8,7 +8,7 @@ public class Jogo{
     static int tamanhoTabuleiro = 7; //se vc colocar para o usuario escolher, deixa do jeito que tá
      static int navioTamanho = 4;// se nao, precisa ser final e com letra maiuscula
     static int quantidadeBarcos = 4;
-    static int quantidadeTentativas = 16; //cuidado pq o usuario nao tem bola de cristal!
+    static int quantidadeTentativas = 23; //cuidado pq o usuario nao tem bola de cristal!
 
     static String[][] tabuleiroJogador1 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
     static String[][] tabuleiroJogador2 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
@@ -149,7 +149,7 @@ public class Jogo{
 
         Thread.sleep(1000); //coloca dentro de um metodo para melhorar a visualização do código
         if (modo==0) {
-            System.out.print(lin+"\n"+"| voce quer ir a loja? se sim       |\n| digite (sim)\t\t\t\t\t    |");
+            System.out.print(lin+"\n"+"| voce quer ir a loja? se sim       |\n|   digite (sim)     digite (nao)   |");
             resposta = input.next();
             while (!(resposta.equals("sim")) && !resposta.equals("nao")) {
                 System.out.println("resposta invalida digite novamente");
@@ -160,22 +160,22 @@ public class Jogo{
             }
             Thread.sleep(1000);
             if (escolheBomba[0] == 0) {
-                System.out.print(lin+"\n"+"""
-                | escolha uma coordenada para jogar |
-                | a bomba                           |""");
+                System.out.print(lin + "\n" + """
+                        | escolha uma coordenada para jogar |
+                        | a bomba                           |""");
                 linha = input.nextInt() - 1;
                 coluna = input.nextInt() - 1;
                 Thread.sleep(1000);
-            }
 
-            //verifica se a jogada é diferente
-            while (!diferentesJogadas(linha, coluna, jogo)) {
-                System.out.print(lin+"\n"+"""
+                //verifica se a jogada é diferente
+                while (!diferentesJogadas(linha, coluna, jogo)) {
+                    System.out.print(lin + "\n" + """
                             | Jogada ja feita escolha outra     |
-                            | jogada                            |""");
-                System.out.print(lin+"\n"+"| Escolha a linha e a coluna        |");
-                linha = input.nextInt() - 1;
-                coluna = input.nextInt() - 1;
+                            | jogada                            |\n""");
+                    System.out.print(lin + "\n" + "| Escolha a linha e a coluna        |");
+                    linha = input.nextInt() - 1;
+                    coluna = input.nextInt() - 1;
+                }
             }
             Thread.sleep(1000);
         }
