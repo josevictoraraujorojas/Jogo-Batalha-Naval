@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Jogo{
 
     static String nomeJogador1, nomeJogador2;
-    static int tamanhoTabuleiro = 5;
-    static int navioTamanho = 1;
-    static int quantidadeBarcos = 1;
-    static int quantidadeTentativas = 2;
+    static int tamanhoTabuleiro = 7;
+    static int navioTamanho = 4;
+    static int quantidadeBarcos = 4;
+    static int quantidadeTentativas = 24;
 
     static String[][] tabuleiroJogador1 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
     static String[][] tabuleiroJogador2 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
@@ -234,14 +234,14 @@ public class Jogo{
                     System.out.println("informe a linha que voce quer saber se tem barco");
                     linha = input.nextInt() - 1;
                     dicas(linha, hack);
-                    tentativas[0] -= 4;
+                    tentativas[0] -= 6;
                 }
                 case 2->{
                     int linha;
                     int coluna;
                     System.out.println("Ativação de boma em andamento");
                     System.out.println("escolha a linha e a coluna em que voce que soltar a Little Boy");
-                    System.out.println("são aceitas as colunas de 0 a "+(tamanhoTabuleiro-navioTamanho));
+                    System.out.println("são aceitas as colunas de 1 a "+(tamanhoTabuleiro-navioTamanho));
                     System.out.println("informe a linha e a coluna");
                     linha=input.nextInt()-1;
                     coluna=input.nextInt()-1;
@@ -253,7 +253,7 @@ public class Jogo{
                     }
                     System.out.println("codigo: 00000000");
                     bomba(parteBarco,linha,coluna,jogo,hack);
-                    tentativas[0] -= 6;
+                    tentativas[0] -= 8;
                     escolheBomba[0]++;
 
 
@@ -332,7 +332,7 @@ public class Jogo{
         System.out.println("modo aleatorio");
         Random aleatorio = new Random();
         int count = 0;
-        while (count < quantidadeBarcos){
+        while (!confereBarcos(x)){
             possibilidade = aleatorio.nextInt(1,4);
             linha = aleatorio.nextInt(1,tamanhoTabuleiro-1);
             coluna = aleatorio.nextInt(1, tamanhoTabuleiro-1);
@@ -344,22 +344,21 @@ public class Jogo{
             }
             geraEscolha(x, possibilidade, linha, coluna);
             imprimirTabuleiro(tabuleiroJogador1, tabuleiroJogador2);
-            count++;
+           // count++;
+
         }
     }
-/*    public static boolean confereBarcos (String[][] x){
+  public static boolean confereBarcos (String[][] x){
         int count = 0;
         for (int i = 0; i < tamanhoTabuleiro; i++) {
             for (int j = 0; j < tamanhoTabuleiro; j++) {
-                if (x[i][j] != casaVazia){
+                if (!(x[i][j].equals(casaVazia))){
                     count++;
                 }
             }
         }
-        if (count < navioTamanho*quantidadeBarcos){
-            return false;
-        }else return true;
-    }*/
+      return count == navioTamanho * quantidadeBarcos;
+    }
     public static void modoEscolha(String nome,String[][] x){
         System.out.println("modo escolha");
         int count = 0;
@@ -497,7 +496,7 @@ public class Jogo{
 
     public static boolean verificaEspacoBarcoLinha(String[][] jogo,int y,int z){
         boolean t = false;
-        if (z+navioTamanho>tamanhoTabuleiro){
+        if (z+navioTamanho>tamanhoTabuleiro && z - navioTamanho < 0){
             t = false;
         }
         else if (z+navioTamanho<=tamanhoTabuleiro){
