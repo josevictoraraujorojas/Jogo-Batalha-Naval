@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Jogo{
 
     static String nomeJogador1, nomeJogador2;
-    static int tamanhoTabuleiro = 7;
+    static int tamanhoTabuleiro = 5;
     static int navioTamanho = 1;
     static int quantidadeBarcos = 1;
     static int quantidadeTentativas = 2;
@@ -179,6 +179,7 @@ public class Jogo{
                 }
                 Thread.sleep(1000);
             }
+
             //verifica se alguma parte do barco foi encontrada
         if (escolheBomba[0] == 0) {
             if (parteEncontrada(linha, coluna, hack)) {
