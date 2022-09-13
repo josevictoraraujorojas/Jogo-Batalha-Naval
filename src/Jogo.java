@@ -43,8 +43,8 @@ public class Jogo{
         tentativasP2[0]=QuantidadeTentativas;
         tentativasP1[0]=QuantidadeTentativas;
 
-        String escolha="x",lin ="|-----------------------------------|";
-        while (!(escolha.equals("4"))){
+        String escolha, lin ="|-----------------------------------|";
+        while (true){
             imprimirMenu();
             System.out.print("|\t digite um numero de 1 a 4: \t|");
             escolha = input.next();
@@ -87,11 +87,13 @@ public class Jogo{
         inicializarTabuleiro(jogoDoJogador2);
         obterNomesDosJogadores();
     }
+    //modo jogador contra jogador
     public static void jogador1xJogador2() throws InterruptedException {
         iniciarJogos();
         escolherOpcaoDeModos();
         iniciarCombate(true,true);
     }
+    //faz com que o combate inicie e tenha um final
     public static void iniciarCombate(boolean modop1,boolean modop2) throws InterruptedException { // modop1 colocar no booleano
         int derrotajogador1=0;
         int derrotajogador2=0;
@@ -103,9 +105,17 @@ public class Jogo{
             vezJogador1++;
             if (jogadasP1[0]>=tentativasP1[0]){
                 derrotajogador1++;
+                System.out.println(nomeJogador1+"\n"+"""
+                                                 |voce foi destuido durante o combate|
+                                                 | seu barco afundou                   |
+                                                                                       """);
             }
             if (jogadasP2[0]>=tentativasP2[0]){
                 derrotajogador2++;
+                System.out.println(nomeJogador2+"\n"+"""
+                                                 |voce foi destuido durante o combate|
+                                                 | seu barco afundou                 |
+                                                                                       """);
             }
             if (vezJogador2%2==0 && derrotajogador2==0) {
                 rodarCombate(modop1,nomeJogador2,jogadasP2,tentativasP2, parteBarcoP2, jogoDoJogador2, tabuleiroJogador2);
@@ -133,22 +143,25 @@ public class Jogo{
                                   | destruidos                       |""");
         }
     }
-    public static void esperarUmMinuto() throws InterruptedException {
+    //faz com que espere algum tempo para imprimir algo
+    public static void esperarUmSegundo() throws InterruptedException {
         Thread.sleep(1000);
     }
+    //faz com que o combate se desenvolva
     public static void rodarCombate(boolean modo,String nome,int[] jogada,int[] tentativas,int[] parteBarco,String[][] jogo,String[][] hack) throws InterruptedException {
         boolean[] escolheLocalBomba={true};
         String resposta , lin ="|-----------------------------------|";
         System.out.println("\n  *__*  jogada do jogador: "+nome+  " *__*");
         //faz a jogada
         jogada[0]++;
-        esperarUmMinuto();
+        esperarUmSegundo();
         System.out.println(lin+"\n"+"| Jogada: " + jogada[0]+"\t\t\t\t\t\t    |");
         System.out.printf(lin+"\n"+"""
                 | voce tem esta quantidade de       |
                 | tentativas para ganhar:%s         |
                 """,tentativas[0]);
-        esperarUmMinuto();
+        esperarUmSegundo();
+        //modo escolha player
         if (modo) {
             System.out.print(lin+"\n"+"| voce quer ir a loja? se sim       |\n|   digite (sim)     digite (nao)   |");
             resposta = input.next();
@@ -159,9 +172,9 @@ public class Jogo{
             if (resposta.equals("sim")) {
                 irParaLoja(escolheLocalBomba, parteBarco, jogo, hack, tentativas);
             }
-            esperarUmMinuto();
+            esperarUmSegundo();
             if (escolheLocalBomba[0]) {
-                System.out.print(lin + "\n" + """
+                System.out.print("\n"+lin + "\n" + """
                         | escolha uma coordenada para jogar |
                         | a bomba                           |""");
 
@@ -176,7 +189,7 @@ public class Jogo{
                     linha = input.nextInt() - 1;
                     coluna = input.nextInt() - 1;
                 }
-                esperarUmMinuto();
+                esperarUmSegundo();
                 //verifica se a jogada e diferente
                 while (!avaliarDiferentesJogadas(linha, coluna, jogo)) {
                     System.out.print(lin + "\n" + """
@@ -185,17 +198,27 @@ public class Jogo{
                     System.out.print("\n"+lin + "\n" + "| Escolha a linha e a coluna        |");
                     linha = input.nextInt() - 1;
                     coluna = input.nextInt() - 1;
+                    while (linha<=-1||linha >= TamanhoTabuleiro||coluna<=-1||coluna >= TamanhoTabuleiro){
+                        System.out.println("| erro!!!                           |");
+                        System.out.print(lin + "\n" + """
+                        | escolha uma coordenada para jogar |
+                        | a bomba                           |""");
+
+                        linha = input.nextInt() - 1;
+                        coluna = input.nextInt() - 1;
+                    }
                 }
             }
-            esperarUmMinuto();
+            esperarUmSegundo();
         }
+        //modo de escolha do computador
         if (!modo) {
             System.out.print(lin+"\n"+"""
                 | escolha uma coordenada para jogar |
                 | a bomba                           |""");
             linha = aleatorio.nextInt(0, TamanhoTabuleiro);
             coluna = aleatorio.nextInt(0, TamanhoTabuleiro);
-            esperarUmMinuto();
+            esperarUmSegundo();
             //verifica se a jogada e diferente
             while (!avaliarDiferentesJogadas(linha, coluna, jogo)) {
                 System.out.print(lin+"\n"+"""
@@ -205,31 +228,33 @@ public class Jogo{
                 linha = aleatorio.nextInt(0, TamanhoTabuleiro);
                 coluna = aleatorio.nextInt(0, TamanhoTabuleiro);
             }
-            esperarUmMinuto();
+            esperarUmSegundo();
         }
         //verifica se alguma parte do barco foi encontrada
         if (escolheLocalBomba[0]) {
             informaPartesEbombasEncontradas(linha,coluna,parteBarco,hack,jogo,lin);
         }
-        esperarUmMinuto();
+        esperarUmSegundo();
         imprimirTabuleiro(jogoDoJogador1,jogoDoJogador2);
     }
+    //informa as partes destruidas e onde tem bomba
     public static void informaPartesEbombasEncontradas(int linha,int coluna,int[]parteBarco,String[][] hack,String[][] jogo,String lin) throws InterruptedException {
         if (mostrarPartesNaviosEncontradas(linha, coluna, hack)) {
             parteBarco[0]++;
-            esperarUmMinuto();
-            System.out.println(lin+"\n"+"| total de partes destruidas: " + parteBarco[0]+"       |");
-            esperarUmMinuto();
+            esperarUmSegundo();
+            System.out.println(lin+"\n"+"| total de partes destruidas: " + parteBarco[0]+"     |");
+            esperarUmSegundo();
             mostrarBarco(linha, coluna, jogo, hack);
-            esperarUmMinuto();
+            esperarUmSegundo();
         }
         //se nenhuma parte foi encontrada ele considera como bomba
         else {
             mostrarBomba(linha, coluna, jogo);
-            esperarUmMinuto();
+            esperarUmSegundo();
             System.out.print(lin+"\n| Nenhum barco encontrado!          |\n"+lin+"\n");
         }
     }
+    //avalia se a jogada ja foi feita
     public static boolean avaliarDiferentesJogadas(int f, int c,String[][] jogo){
         return jogo[f][c].equals("*");
     }
@@ -247,6 +272,7 @@ public class Jogo{
     public static boolean mostrarPartesNaviosEncontradas(int f, int c,String[][] hack){
         return hack[f][c].equals("-") || hack[f][c].equals("|") ;
     }
+    //entra na loja
     public static void irParaLoja (boolean[]escolheBomba,int[]parteBarco,String[][] jogo,String[][]hack,int[] tentativas) throws InterruptedException {
         int resposta=0; String lin ="|-----------------------------------|";
         while (resposta!=1&&resposta!=2) {
@@ -256,27 +282,27 @@ public class Jogo{
                                   | dinheiro sao suas tentativas!!      |
                                   %s
                                   |   Dicas(1)    |R$ -4 tentativas     |
-                                  | Litle Boy(2)  |R$ -6 tentativas     |
+                                  | Litle Boy(2)  |R$ -4 tentativas     |
                                   %s""",lin,lin);
             System.out.print("\n| escolha                           |");
             resposta = input.nextInt();
             switch (resposta) {
+                //dica
                 case 1-> {
                     int linha;
                     System.out.print(lin+"\n|informe a linha que voce quer saber|" +
                             "\n| se tem barco                      |");
                     linha = input.nextInt() - 1;
                     while (linha<=-1||linha >= TamanhoTabuleiro){
-                        System.out.println("| erro!!!                           |");
-                        System.out.print(lin + "\n" + """
-                        | escolha uma coordenada para jogar |
-                        | a bomba                           |""");
+                        System.out.println("erro");
+                        System.out.print(lin+"\n|informe a linha que voce quer saber|" +
+                                "\n| se tem barco                      |");
                         linha = input.nextInt() - 1;
-                        coluna = input.nextInt() - 1;
                     }
                     darDicas(linha, hack);
                     tentativas[0] -= 4;
                 }
+                //bomba especial
                 case 2->{
                     int linha;
                     int coluna;
@@ -285,46 +311,61 @@ public class Jogo{
                                             | Escolha a linha e a coluna em que |
                                             | voce que soltar a Little Boy      |
                                             """);
-                    System.out.println("*X* sao aceitas as colunas de 0 a "+(TamanhoTabuleiro-NavioTamanho)+"*X*");
+                    System.out.println("*X* sao aceitas as colunas de 0 a "+(TamanhoTabuleiro-2)+"*X*");
                     System.out.println("| informe a linha e a coluna        |");
                     linha=input.nextInt()-1;
                     coluna=input.nextInt()-1;
-                    while (coluna>=(TamanhoTabuleiro-NavioTamanho)){
-                        System.out.println("""
-                                        | valor nao aceito!!!               |
-                                        | informe a linha e a coluna:       |
-                                                                               """);
-                        linha=input.nextInt()-1;
-                        coluna=input.nextInt()-1;
-                        while (linha<=-1||linha >= TamanhoTabuleiro||coluna<=-1||coluna >= TamanhoTabuleiro){
+                    int count=0;
+                        while (!verficaSeTemEspacoPraBomba(linha,coluna,jogo)||linha<0||linha >= TamanhoTabuleiro||coluna<0||coluna >= (TamanhoTabuleiro-2)){
+                            count++;
                             System.out.println("erro");
                             System.out.print(lin + "\n" + """
                         | escolha uma coordenada para jogar |
                         | a bomba                           |""");
+                            if (count==7){
+                                System.out.println("erro");
+                                System.out.print(lin + "\n" + """
+                        | muitas tentativas para colocar a  |
+                        | bomba seu protoclo foi cancelado  |""");
+                            }
 
                             linha = input.nextInt() - 1;
                             coluna = input.nextInt() - 1;
                         }
-                    }
-                    System.out.println("| codigo: 00000000                  |");
-                    jogarBomba(parteBarco,linha,coluna,jogo,hack,lin);
-                    tentativas[0] -= 6;
-                    escolheBomba[0]=false;
+                            System.out.println("| codigo: 00000000                  |");
+                            jogarBomba(parteBarco, linha, coluna, jogo, hack, lin);
+                            tentativas[0] -= 4;
+                            escolheBomba[0] = false;
+
+
                 }
                 default ->  System.out.println(lin+"\n| resposta invalida                 |");
             }
         }
     }
+    //verifica se tem lugar para a bomba
+    public static boolean verficaSeTemEspacoPraBomba(int linha,int coluna,String[][] jogo){
+        int count=0;
+        for (int i = coluna; i <= 2+coluna ; i++) {
+            if (jogo[linha][i].equals(casaVazia)){
+                count++;
+            }
+        }
+       return count==3;
+    }
+    //joga a bomba especial
     public static void jogarBomba(int[]parteBarco,int linha,int coluna,String[][] jogo,String[][] hack,String lin) throws InterruptedException {
-        for (int i = coluna; i <= NavioTamanho+coluna ; i++) {
+        for (int i = coluna; i <= 2+coluna ; i++) {
+
             informaPartesEbombasEncontradas(linha,i,parteBarco,hack,jogo,lin);
         }
     }
+    //mostra a dica
     public static void darDicas(int x,String[][] hack) {
         int count =0; String lin ="|-----------------------------------|";
         for (int i = 0; i < TamanhoTabuleiro ; i++) {
             if (hack[x][i].equals("-")||hack[x][i].equals("|")){
-                System.out.println(lin+"| dica da linha                     |\n"+lin);
+                System.out.println(lin+"\n"+"| dica da linha                     |\n"+lin);
                 System.out.println("| linha: "+(x+1)+"                          |\n"+lin);
                 System.out.println("| coluna: "+(i+1)+"                         |\n"+lin);
                 count++;
@@ -335,6 +376,7 @@ public class Jogo{
             System.out.println("| nao tem barco nessa linha...      |");
         }
     }
+    //jogador contra o computador
     public static void jogador1xComputador() throws InterruptedException {
         iniciarJogos();
         jogarAleatorio(nomeJogador1, tabuleiroJogador1);
@@ -379,7 +421,6 @@ public class Jogo{
                 verificaCasaVazia(x, possibilidade, linha, coluna);
             }
             gerarEscolha(x, possibilidade, linha, coluna);
-            imprimirTabuleiro(tabuleiroJogador1, tabuleiroJogador2);
         }
     }
     public static boolean confereQuantidadeBarcos (String[][]x) {
@@ -447,7 +488,6 @@ public class Jogo{
             }
             System.out.println(lin);
             gerarEscolha(x, possibilidade, linha, coluna);
-            imprimirTabuleiro(tabuleiroJogador1, tabuleiroJogador2);
         }
     }
     public static boolean verificaCasaVazia (String[][] jogo,int x,int y,int z) { //verifica se ja tem barcos lancados nas casas
@@ -652,8 +692,9 @@ public class Jogo{
         return t;
     }
     public static void acessarMenuAjuda() throws InterruptedException {
-        String escolha;
-        while (true){
+        String escolha = "x";
+        String lin ="|-----------------------------------|";
+        while (!escolha.equals("4")){
 
             System.out.print("""
                            |  ~ ~ ~ ~ __ ~ ajuda ~ __ ~ ~ ~ ~  |",
@@ -702,7 +743,8 @@ public class Jogo{
                             | a bomba no mapa. Em todas as      |
                             | rodadas ele podera acessar a loja.|
                             |-----------------------------------|""");
-                    voltarAoMenuPrincipal("1");
+                    retornandoParaOMenuDeAjuda();
+
                 }
                 case "2" -> {
                     System.out.println("""
@@ -731,7 +773,8 @@ public class Jogo{
                             | a bomba no mapa. Em todas as      |
                             | rodadas ele podera acessar a loja.|
                             |-----------------------------------|""");
-                    voltarAoMenuPrincipal("1");
+                    retornandoParaOMenuDeAjuda();
+
                 }
                 case "3" -> {
                     System.out.println(""" 
@@ -749,17 +792,31 @@ public class Jogo{
                             | barco ou nao. O player escolhendo |
                             | a loja vendera 4 tentativas para  |
                             | ter a dica A little boy e uma     |
-                            | bomba especial onde ela atinge 5  |
+                            | bomba especial onde ela atinge 4  |
                             | casas de uma vez so, o player tera|
                             | que informar a linha e a coluna.  |
                             | Escolhendo a little boy o player  |
                             | vendera 6 tentativas.             |
                             |-----------------------------------|""");
-                    voltarAoMenuPrincipal("1");
+
+                    retornandoParaOMenuDeAjuda();
                 }
-                case "4"-> rodarMenuPrincipal();
+                case "4"-> System.out.println("|voltando!!\t\t\t\t\t\t\t|");
                 default ->  System.out.println("| erro!!!\t\t\t\t\t\t\t|");
-            }}}
+            }
+        }
+    }
+    public static void retornandoParaOMenuDeAjuda () {
+        String escolha="x", lin ="|-----------------------------------|";
+        while (!(escolha.equals("2"))){
+            System.out.print("| deseja contiuar lendo as regras? sim(1) nao(2)|\n"+lin);
+            escolha = input.next();
+            switch (escolha){
+                case "1" -> System.out.println("|   Continuar lendo   |");
+                case "2"-> System.out.println("|voltando!!\t\t\t\t\t\t\t|");
+                default -> System.out.println("| erro!!!\t\t\t\t\t\t\t|");}}
+
+    }
     public static void voltarAoMenuPrincipal(String x ){
         String escolha = "x", lin ="|-----------------------------------|";
         while (!(escolha.equals(x))){
