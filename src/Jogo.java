@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Jogo{
 
     static String nomeJogador1, nomeJogador2;
-    static int tamanhoTabuleiro = 7; //se vc colocar para o usuario escolher, deixa do jeito que t?
-    static int navioTamanho = 4;// se nao, precisa ser final e com letra maiuscula
-    static int quantidadeBarcos = 4;
-    static int quantidadeTentativas = (quantidadeBarcos*navioTamanho)+5; //cuidado pq o usuario nao tem bola de cristal!
+    final static int tamanhoTabuleiro = 7; //se vc colocar para o usuario escolher, deixa do jeito que t?
+    final static int navioTamanho = 4;// se nao, precisa ser final e com letra maiuscula
+    final static int quantidadeBarcos = 4;
+    final static int quantidadeTentativas = (quantidadeBarcos*navioTamanho)+5; //cuidado pq o usuario nao tem bola de cristal!
 
     static String[][] tabuleiroJogador1 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
     static String[][] tabuleiroJogador2 = new String[tamanhoTabuleiro][tamanhoTabuleiro];
@@ -21,7 +21,7 @@ public class Jogo{
     static int[] parteBarcoP1 = new int[1];
     static int[] parteBarcoP2 = new int[1];
     static Scanner input = new Scanner(System.in);
-    static String casaVazia = "*";
+    final static String casaVazia = "*";
     static int linha;
     static int coluna;
     static int possibilidade;
@@ -654,9 +654,9 @@ public class Jogo{
         }
         return t;
     }
-    public static void MenuAjuda(){
-        String escolha = "0", lin ="|-----------------------------------|";
-        while (!(escolha.equals("1"))||!(escolha.equals("2"))||!(escolha.equals("3"))||!(escolha.equals("4"))||!(escolha.equals("5"))){
+    public static void MenuAjuda() throws InterruptedException {
+        String escolha;
+        while (true){
 
             System.out.print("""
                            |  ~ ~ ~ ~ __ ~ ajuda ~ __ ~ ~ ~ ~  |",
@@ -666,18 +666,102 @@ public class Jogo{
                            |         multiplayers(1)           |
                            |         singleplayer(2)           |
                            |             Loja(3)               |
-                           |    falar com o desenvolvedor(4)   |
                            |                                   |
-                           |    voltar ao menu principal(5)    |""");
+                           |    voltar ao menu principal(4)    |""");
             escolha = input.next();
+            System.out.println("|-----------------------------------|");
             switch (escolha) {
-                case "1" -> System.out.println("hello");
-                case "2" -> System.out.println("sss00");
-                case "3" -> System.out.println("labaxu0");
-           /*     case "4" -> System.out.println("lslsls");
-                case "5"->voltarAoMenuPrincipal("5",escolha);
+                case "1" -> {
+                    System.out.println("""
+                            |---------Ajuda multiplayer---------|
+                            |                                   |
+                            | O jogo tem proporcoes de 7x7, com |
+                            | 4 navios de 4 casas cada.         |
+                            | Os jogadores podem optar por,     |
+                            | escolher a posicao do barcos do   |
+                            | seu adverario ou deixar que o     |
+                            | computador escolha por voce.      |
+                            | todos os jogadores tem 21         |
+                            | tentativas que podem diminuir no  |
+                            | decorrer do jogo                  |
+                            | Ganha o jogo o primeiro player que|
+                            | destruir todos os barcos Se todos |
+                            | os players perderem suas          |
+                            | tentativas nenhum player ganha e  |
+                            | o jogo acaba Se um player perder  |
+                            | suas tentativas e o outro player  |
+                            | nao o segundo player ira jogar ate|
+                            |perder suas tentativas ou ganhar o |
+                            | jogo.                             |
+                            | Durante o jogo:                   |
+                            | Os players terao que informar a   |
+                            | linha e a coluna em que querem    |
+                            | jogar as bombas Se tiver alguma   |
+                            | parte de um barco ali ele         |
+                            | informara a quantidade de partes  |
+                            | destruidas e mostrara o barco no  |
+                            | jogo Se nao tiver barco sera      |
+                            | informado que nao tem e mostrara  |
+                            | a bomba no mapa Em todas as       |
+                            | rodadas ele podera acessar a loja.|
+                            |-----------------------------------|""");
+                    voltarAoMenuPrincipal("1");
+                }
+                case "2" -> {
+                    System.out.println("""
+                            |--------Ajuda single player--------|
+                            |                                   |
+                            | O jogo tem proporcoes de 7x7, com |
+                            | 4 navios de 4 casas cada.         |
+                            | o jogador vai enfrentar o         |
+                            | computador com navios em posicoes |
+                            | aleatorias.                       |
+                            | somente o jogador podera acessar  |
+                            | a loja. se o jogador gastar todas |
+                            | as suas tentativas ele perde.     |
+                            | o jogo finaliza quando todos os   |
+                            | navios de um dos tabuleiros forem |
+                            | destruidos.                       |
+                            | Durante o jogo:                   |
+                            | O jogador tera que informar a     |
+                            | linha e a coluna em que querem    |
+                            | jogar as bombas Se tiver alguma   |
+                            | parte de um barco ali ele         |
+                            | informara a quantidade de partes  |
+                            | destruidas e mostrara o barco no  |
+                            | jogo Se nao tiver barco sera      |
+                            | informado que nao tem e mostrara  |
+                            | a bomba no mapa Em todas as       |
+                            | rodadas ele podera acessar a loja.|
+                            |-----------------------------------|""");
+                    voltarAoMenuPrincipal("1");
+                }
+                case "3" -> {
+                    System.out.println(""" 
+                            |----------------loja---------------|
+                            |                                   |
+                            | Durante o jogo sera perguntado ao |
+                            | player se ele que ir a loja Ele   |
+                            | pode escolher entre ir a loja ou  |
+                            | continuar o jogo sem ir nela Se   |
+                            | ele for a loja ele tera 2 escolhas|
+                            | de itens a dica e a little boy    |
+                            | A dica funciona da seguinte       |
+                            | maneira o player tera que informar|
+                            | a linha em que quer saber se tem  |
+                            | barco ou nao O player escolhendo a|
+                            | loja vendera 4 tentativas para ter|
+                            | a dica A little boy e uma bomba   |
+                            | especial onde ela atinge 5 casas  |
+                            | de uma vez so, o player tera que  |
+                            | informar a linha e a coluna       |
+                            | Escolhendo a little boy o player  |
+                            | vendera 6 tentativas              |
+                            |-----------------------------------|""");
+                    voltarAoMenuPrincipal("1");
+                }
+                case "4"-> rodarMenuPrincipal();
                 default ->  System.out.println("| erro!!!\t\t\t\t\t\t\t|");
-*/
             }}}
 
     public static void voltarAoMenuPrincipal(String x ){
@@ -693,19 +777,7 @@ public class Jogo{
             }
         }
     }
-    public static void voltar(String x ,String y){
-        String  lin ="|-----------------------------------|";
-        while (!(y.equals(x))){
 
-            System.out.print("| digite ("+x+") para voltar ao menu    |\n"+lin);
-            y = input.next();
-            if (x.equals(y)) {
-                System.out.println("|voltando!!\t\t\t\t\t\t\t|");
-            } else {
-                System.out.println("| erro!!!\t\t\t\t\t\t\t|");
-            }
-        }
-    }
     public static void lerCreditos(){
         String lin ="|-----------------------------------|" ,tit= "\n|   ~ ~ ~ __   creditos  __ ~ ~ ~   |";
 
@@ -713,8 +785,8 @@ public class Jogo{
                        | * ~ * ~ -Ariana Mesquita- ~ * ~ * |
                        | <....> -Jose Victor Rojas- <....> |
                        |    ~ _ - Pedro  Ferreira - _ ~    |""");
-        String x="1";
-        voltarAoMenuPrincipal(x);
+
+        voltarAoMenuPrincipal("1");
 
     }
     public static void sair(){
